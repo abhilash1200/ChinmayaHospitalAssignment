@@ -2,7 +2,7 @@
 .gradle
 gr
 build/
-
+out
 # IntelliJ IDEA
 .idea/
 *.iml
