@@ -1,25 +1,40 @@
 package ChinmayaHospitals.DataLoader;
 
-import io.restassured.path.json.JsonPath;
-import lombok.SneakyThrows;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import ChinmayaHospitals.OP.Patient;
+import ChinmayaHospitals.OP.Doctor;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class DataLoader {
+    List<Patient> patientList = new ArrayList<>();
 
-    public JsonPath getData() {
+    public void loadData()
+    {
+        Calendar calendar = Calendar.getInstance();
+        Doctor doctor1 = Doctor.builder()
+                .visitDate(calendar.getTime())
+                .visitingDoctorName("Krishna")
+                .build();
 
-        String dbFile="src/test/java/ChinmayaHospitals/DataLoader/PatientDB.json";
-        JsonPath jsonPath = convertJsonToJsonPath(dbFile);
-        return jsonPath;
+        Doctor doctor2= Doctor.builder()
+                .visitDate(calendar.getTime())
+                .visitingDoctorName("Kumar")
+                .build();
+
+        Doctor doctor3= Doctor.builder()
+                .visitDate(calendar.getTime())
+                .visitingDoctorName("Rani")
+                .build();
+
+        patientList.add(Patient.builder().name("Abhilash").location("Bangalore").visitInfo(doctor1).build());
+        patientList.add(Patient.builder().name("Karthik").location("Tumkur").visitInfo(doctor2).build());
+        patientList.add(Patient.builder().name("Krishna").location("Nandi Hills").visitInfo(doctor3).build());
+        patientList.add(Patient.builder().name("Kumaran").location("Bangalore").visitInfo(doctor2).build());
+        patientList.add(Patient.builder().name("Kailash").location("Bangalore").visitInfo(doctor1).build());
     }
-
-    @SneakyThrows
-    public JsonPath convertJsonToJsonPath(String fileName) {
-
-        String json = new String(Files.readAllBytes(Paths.get(fileName)));
-        JsonPath jsonPath = new JsonPath(json);
-        return jsonPath;
+    public List<Patient> getPatientsData()
+    {
+        return this.patientList;
     }
 }

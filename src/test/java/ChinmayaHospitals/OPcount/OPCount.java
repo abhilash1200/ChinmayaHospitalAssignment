@@ -1,34 +1,33 @@
 package ChinmayaHospitals.OPcount;
 
 import ChinmayaHospitals.DataLoader.DataLoader;
+import ChinmayaHospitals.OP.Hospital;
 import org.testng.annotations.Test;
-import static org.assertj.core.api.Assertions.*;
 
 public class OPCount {
     DataLoader dataLoader = new DataLoader();
 
     @Test
-    public void calculatePatientsPercentageFromBangalore()
+    public void twosasdfadf()
     {
         //Arrange
-        int numberOfPatientsFromBangalore=0;
-        int totalPatients=dataLoader.getData().getInt("size()");
+        Hospital hospital = Hospital.builder()
+                .name("Chinmaya Hospitals")
+                .location("Bangalore")
+                .build();
+        dataLoader.loadData();
 
-        for (int i = 0; i < totalPatients; i++) {
+        //Act
+        int bangalorePatientsCount = (int) dataLoader.getPatientsData().stream().filter(p->p.getLocation().equalsIgnoreCase(hospital.getLocation())).count();
+        int outStationPatientsCount= dataLoader.getPatientsData().size()-bangalorePatientsCount;
 
-            if(dataLoader.getData().getString("[" +i+ "].BaseLocation").equalsIgnoreCase("Bangalore")) {
-                numberOfPatientsFromBangalore++;
-            }
-        }
-        //Act - Calculating the Percentages
-        double percentageOfPatientsFromBangalore =  ((double) numberOfPatientsFromBangalore / totalPatients) * 100;
-        double perentageOfPatientsOutsideBangalore=100-percentageOfPatientsFromBangalore;
+        System.out.println("Patients From Bangalore: "+getPatientsVisitPercentage(bangalorePatientsCount));
+        System.out.println("Patients From Ouside: "+getPatientsVisitPercentage(outStationPatientsCount));
 
-        //Assert  - Assuming there should be atleast 20-40% patients should be from outside Bangalore
-        assertThat(perentageOfPatientsOutsideBangalore).isBetween(20.00,40.00);
+    }
 
-       /* System.out.println("Percentage Of Local Patients: " +  percentageOfPatientsFromBangalore);
-       System.out.println("Percentage Of OutStation Patients: " + (100 - percentageOfPatientsFromBangalore));*/
-
+    Double getPatientsVisitPercentage(Integer visitorsByLocationCount)
+    {
+        return  Double.valueOf(visitorsByLocationCount * 100 / dataLoader.getPatientsData().size());
     }
 }
